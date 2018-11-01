@@ -7,6 +7,7 @@ and modified
 */
 
 #include<iostream>
+#include<bits/stdc++.h>
 #include<pcl/io/pcd_io.h>
 #include<pcl/io/ply_io.h>
 #include<pcl/point_cloud.h>
@@ -17,18 +18,23 @@ using namespace std;
 void showHelp(char *program_name)
 {
   cout << endl;
-  cout << "Usage: " << program_name << " cloud_filename.[pcd|ply]" << "1 or 2" << endl;
-  cout << "1 or 2\n\n Method for transformation \n 1 --> Using Matrix4f \n 2 --> Using Affine3f \n"<< endl;
+  cout << "Usage: " << program_name << " cloud_filename.[pcd|ply]" << "   Method{1 or 2}" << endl;
+  cout << "\n\n Method for transformation \n 1 --> Using Matrix4f \n 2 --> Using Affine3f \n"<< endl;
   cout << "-h:  Show this help." << endl;
 }
 int main (int argc, char** argv)
 {
- 	if(pcl::console::find_switch(argc, argv, "-h") || pcl::console::find_switch(argc, argv, "--help") || argc!=2)
+  if(argc!=3)
+  {
+    showHelp(argv[0]);
+    return 0;
+  }
+ 	if(pcl::console::find_switch(argc, argv, "-h") || pcl::console::find_switch(argc, argv, "--help"))
 	{
     	showHelp(argv[0]);
     	return 0;
-  	}
-  	vector<int> filenames;
+  }
+  vector<int> filenames;
 	bool file_is_pcd=false;
 	int matmet = atoi(argv[1]);
 	filenames = pcl::console::parse_file_extension_argument(argc, argv, ".ply");
@@ -107,7 +113,6 @@ int main (int argc, char** argv)
     This method is easier and less error prone
 */
   	Eigen::Affine3f transform_2 = Eigen::Affine3f::Identity();
-
   	float thetaZ = M_PI/4;
   	float thetaY = 0.0;
   	float thetaX = 0.0;
